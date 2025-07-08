@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="row text-center">
+    {% for product in products %}
+        <div class="col-3">
+            <div class="card mb-4" style="width: 18rem;">
+                <img src="{{ product.image | media_filter }}" class="card-img-top" alt="#">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name_product }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <a href="{% url 'catalog:product' product.pk %}" class="btn btn-primary">Посмотреть</a>
+                    </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
