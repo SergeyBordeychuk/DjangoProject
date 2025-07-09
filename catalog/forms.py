@@ -2,7 +2,11 @@ from django.forms import ModelForm
 
 from catalog.models import Product
 from django.core.exceptions import ValidationError
+import os
+from dotenv import load_dotenv
 
+load_dotenv(override=True)
+BAD_WORDS = os.getenv('BAD_WORDS')
 
 class ProductForm(ModelForm):
     class Meta:
@@ -31,7 +35,7 @@ class ProductForm(ModelForm):
         name_product = cleaned_data.get('name_product')
         description = cleaned_data.get('description')
 
-        for word in ('казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар'):
+        for word in BAD_WORDS:
 
             if word in name_product.lower():
                 self.add_error('name_product', 'В названии продукта не должен содержаться спам')
