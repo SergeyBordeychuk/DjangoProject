@@ -16,8 +16,15 @@
                         <p class="card-text">{{ product.description }}</p>
                         {% if user.is_authenticated %}
                             <a href="{% url 'catalog:product' product.pk %}" class="btn btn-primary">Посмотреть</a>
-                            <a href="{% url 'catalog:update' product.pk %}" class="btn btn-secondary">Редактировать</a>
-                            <a href="{% url 'catalog:delete' product.pk %}" class="btn btn-danger">Удалить</a>
+                            {% if user == product.owner %}
+                                <a href="{% url 'catalog:update' product.pk %}" class="btn btn-secondary">Редактировать</a>
+                            {% endif %}
+                            {% if 'catalog.delete_product' in perms or user == product.owner %}
+                                <a href="{% url 'catalog:delete' product.pk %}" class="btn btn-danger">Удалить</a>
+                            {% endif %}
+                            {% if 'catalog.can_unpublish_product' in perms %}
+                                <a href="{% url 'catalog:unpublish' product.pk %}" class="btn btn-danger">Убрать</a>
+                            {% endif %}
                         {% endif %}
                     </div>
             </div>
