@@ -6,12 +6,13 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-BAD_WORDS = os.getenv('BAD_WORDS')
+BAD_WORDS = os.getenv('BAD_WORDS').split(', ')
+
 
 class ProductForm(ModelForm):
     class Meta:
         model = Product
-        fields = ['name_product', 'description', 'price']
+        fields = ['name_product', 'description', 'price', 'category']
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
@@ -36,7 +37,7 @@ class ProductForm(ModelForm):
         description = cleaned_data.get('description')
 
         for word in BAD_WORDS:
-
+            print(word)
             if word in name_product.lower():
                 self.add_error('name_product', 'В названии продукта не должен содержаться спам')
 
