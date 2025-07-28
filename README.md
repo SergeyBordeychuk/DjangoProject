@@ -8,7 +8,7 @@
 
 1. Клонируйте репозиторий:
 ```commandline
-git clone aaa
+git clone https://github.com/SergeyBordeychuk/DjangoProject.git
 ```
 2. Установите зависимости:
 ```commandline
@@ -21,4 +21,4 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 2. Закрыть сервер
-CTTL+C
+CTRL+C

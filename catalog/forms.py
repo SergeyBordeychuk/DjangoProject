@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from catalog.models import Product
+from catalog.models import Product, Category
 from django.core.exceptions import ValidationError
 import os
 from dotenv import load_dotenv
@@ -12,7 +12,7 @@ BAD_WORDS = os.getenv('BAD_WORDS').split(', ')
 class ProductForm(ModelForm):
     class Meta:
         model = Product
-        fields = ['name_product', 'description', 'price', 'category']
+        fields = ['name_product', 'description', 'price', 'category_name']
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
@@ -37,7 +37,6 @@ class ProductForm(ModelForm):
         description = cleaned_data.get('description')
 
         for word in BAD_WORDS:
-            print(word)
             if word in name_product.lower():
                 self.add_error('name_product', 'В названии продукта не должен содержаться спам')
 
@@ -49,3 +48,32 @@ class ProductForm(ModelForm):
         if price < 0:
             raise ValidationError('Price не может быть отрицательным')
         return price
+
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name_category', 'description',]
+
+    def __init__(self, *args, **kwargs):
+        super(CategoryForm, self).__init__(*args, **kwargs)
+        self.fields['name_category'].widget.attrs.update({
+            'class':'form-control',
+            'placeholder':'Введите название категории',
+        })
+        self.fields['description'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Введите описание категории',
+        })
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name_category = cleaned_data.get('name_category')
+        description = cleaned_data.get('description')
+
+        for word in BAD_WORDS:
+            if word in name_category.lower():
+                self.add_error('name_category', 'В названии категории не должен содержаться спам')
+
+            if word in description.lower():
+                self.add_error('description', 'В описание категории не должен содержаться спам')
