@@ -21,7 +21,7 @@ class Product(models.Model):
     name_product = models.CharField(max_length=150, verbose_name='Продукт')
     description = models.TextField(null=True, blank=True)
     image = models.ImageField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category_name = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.IntegerField()
     is_publicate = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
